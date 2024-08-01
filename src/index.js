@@ -4,6 +4,7 @@ import morgan from "morgan";
 import dotenv from "dotenv";
 import cors from "cors";
 import router from "./routes";
+// import { connection } from "./DbConnection";
 
 dotenv.config();
 const app = express();
@@ -27,7 +28,8 @@ app.get("/", (req, res) => {
   });
 });
 
-
+// testting the connection
+// connection
 const PORT = process.env.PORT || 4200;
 app.listen(PORT, () => {
   console.log(`Server running on port: http://localhost:${PORT}`);
