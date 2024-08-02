@@ -69,3 +69,105 @@ export const getAllUsers = async (req, res) => {
         });
     }
 };
+
+
+// get by Id
+
+export const getUserById = async (req, res) => {
+    const { id } = req.params
+    try {
+        const result = await UserService.getUserById(id);
+
+        if (result.success && result.user) {
+            return res.status(200).json({
+                status: "200",
+                message: result.message,
+                data: result.user,
+            });
+        } else if (result.success && !result.user) {
+            return res.status(404).json({
+                status: "404",
+                message: result.message,
+            });
+        } else {
+            return res.status(500).json({
+                status: "500",
+                message: result.message,
+            });
+        }
+    } catch (error) {
+        console.log("Controller Error:", error);
+        return res.status(500).json({
+            status: "500",
+            message: "Failed to retrieve users",
+            error: error.message,
+        });
+    }
+};
+
+
+// update user
+
+export const updateUser = async (req, res) => {
+    const { id } = req.params;
+    const { error, value } = validateUser(req.body);
+
+    if (error) {
+        return res.status(400).json({ message: error.details[0].message });
+    }
+
+    try {
+        const userResponse = await UserService.updateUser(id, value, req.file);
+
+        // Log the user response
+        if (userResponse.success) {
+            return res.status(200).json({
+                status: "200",
+                message: userResponse.message,
+                data: userResponse.user,
+            });
+        } else {
+            return res.status(400).json({
+                status: "400",
+                message: userResponse.message,
+            });
+        }
+    } catch (error) {
+        console.log("Controller Error:", error);
+        return res.status(500).json({
+            status: "500",
+            message: "Failed to retrieve users",
+            error: error.message,
+        });
+    }
+};
+
+
+// delete user
+
+export const deleteUser = async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        const result = await UserService.deleteUser(id);
+
+        if (result.success) {
+            return res.status(200).json({
+                status: "200",
+                message: result.message,
+            });
+        } else {
+            return res.status(400).json({
+                status: "400",
+                message: result.message,
+            });
+        }
+    } catch (error) {
+        console.log("Controller Error:", error);
+        return res.status(500).json({
+            status: "500",
+            message: "Failed to retrieve users",
+            error: error.message,
+        });
+    }
+};
