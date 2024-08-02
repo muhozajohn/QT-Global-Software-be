@@ -1,9 +1,10 @@
-import { User } from "../dbase/models";
+import { User, Posts } from "../dbase/models";
 import bcrypt from "bcrypt";
 import { uploadToCloud } from "../helper/cloud";
+import generateToken from "../utils/generateToken";
 
 // Create a new user
-export const createUser = async (userData, file) => {
+export const createUser = async (userData, file, res) => {
     try {
         // Check if the user already exists
         const existing = await User.findOne({ where: { email: userData.email } });
@@ -14,7 +15,7 @@ export const createUser = async (userData, file) => {
         // Upload the file to cloud if provided
         let result;
         if (file) {
-            result = await uploadToCloud(file);
+            result = await uploadToCloud(file, res);
         }
 
         // Hash the user's password
@@ -38,6 +39,36 @@ export const createUser = async (userData, file) => {
 };
 
 
+// login user
+export const loginUser = async (userData) => {
+    try {
+        const user = await User.findOne({ where: { email: userData.email } });
+        if (!user) {
+            return { success: false, message: 'User Not Found' };
+        }
+
+        const isMatch = await bcrypt.compare(userData.password, user.password);
+        if (!isMatch) {
+            return { success: false, message: 'Invalid password' };
+        }
+
+        const token = generateToken(user.id)
+
+        return {
+            success: true,
+            message: 'Login successful',
+            token,
+            user,
+        };
+    } catch (error) {
+        return {
+            success: false,
+            message: error.message,
+        };
+    }
+};
+
+
 // get All users
 
 export const getAllUsers = async () => {
@@ -56,7 +87,11 @@ export const getAllUsers = async () => {
 
 export const getUserById = async (userId) => {
     try {
-        const user = await User.findByPk(userId);
+        const user = await User.findByPk(userId, {
+            include: [{
+                model: Posts
+            }]
+        });
         if (!user) {
             return { success: false, message: "User not found" };
         }

@@ -9,11 +9,11 @@ cloudinary.config({
 });
 export const uploadToCloud = async (file, res) => {
     try {
-        const univeUploads = await cloudinary.uploader.upload(file.path, {
+        const Uploads = await cloudinary.uploader.upload(file.path, {
             folder: "Qt",
             use_filename: true,
         });
-        return univeUploads;
+        return Uploads;
     } catch (error) {
         return res.status(500).send(error);
     }

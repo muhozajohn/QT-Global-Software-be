@@ -7,7 +7,7 @@ const router = express.Router();
 
 // Route
 router.use("/users", userRoute)
-router.use("/blog", blogRoute)
+router.use("/post", blogRoute)
 router.use("/docs", docrouter)
 
 
