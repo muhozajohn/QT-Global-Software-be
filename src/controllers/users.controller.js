@@ -1,4 +1,4 @@
-import { validateUser } from "../validation";
+import { validateUser, validateUserLogin } from "../validation";
 import * as UserService from "../services/users.services";
 
 // createUser controller
@@ -11,7 +11,7 @@ export const createUser = async (req, res) => {
     }
 
     try {
-        const userResponse = await UserService.createUser(value, req.file);
+        const userResponse = await UserService.createUser(value, req.file, res);
 
         // Log the user response
         if (userResponse.success) {
@@ -36,6 +36,42 @@ export const createUser = async (req, res) => {
     }
 };
 
+
+// login
+
+export const loginUser = async (req, res) => {
+    const { error, value } = validateUserLogin(req.body);
+
+    if (error) {
+        return res.status(400).json({ message: error.details[0].message });
+    }
+
+    try {
+        const userResponse = await UserService.loginUser(value);
+
+        // Log the user response
+        if (userResponse.success) {
+            return res.status(200).json({
+                status: "200",
+                message: userResponse.message,
+                token: userResponse.token,
+                data: userResponse.user,
+            });
+        } else {
+            return res.status(401).json({
+                status: "401",
+                message: userResponse.message,
+            });
+        }
+    } catch (error) {
+        console.log("Controller Error:", error);
+        return res.status(500).json({
+            status: "500",
+            message: "Failed to Login",
+            error: error.message,
+        });
+    }
+};
 
 // get allusers
 
@@ -166,7 +202,7 @@ export const deleteUser = async (req, res) => {
         console.log("Controller Error:", error);
         return res.status(500).json({
             status: "500",
-            message: "Failed to retrieve users",
+            message: "Failed to delete user",
             error: error.message,
         });
     }

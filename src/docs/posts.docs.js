@@ -1,20 +1,20 @@
-const userDocs = {
+const postDocs = {
     tags: [
         {
-            name: "Users",
-            description: "Operations related to Users entities",
+            name: "Posts",
+            description: "Operations related to Posts entities",
         },
     ],
     paths: {
-        // users 
-        "/api/users": {
+        // Posts 
+        "/api/post": {
             get: {
-                tags: ["Users"],
-                summary: "Get All Users",
-                description: "Get all users",
+                tags: ["Posts"],
+                summary: "Get All Posts",
+                description: "Get all Posts",
                 responses: {
                     200: {
-                        description: "All User Posts retrieved successfully",
+                        description: "All post Posts retrieved successfully",
                     },
                     500: {
                         description: "Internal Server Error",
@@ -22,30 +22,27 @@ const userDocs = {
                 },
             },
             post: {
-                tags: ["Users"],
-                summary: "Create User",
-                description: "Create a new user",
+                tags: ["Posts"],
+                summary: "Create post",
+                description: "Create a new post",
                 requestBody: {
                     content: {
                         "multipart/form-data": {
                             schema: {
                                 type: "object",
                                 properties: {
-                                    firstName: {
+                                    title: {
                                         type: "string",
                                     },
-                                    lastName: {
+                                    description: {
                                         type: "string",
                                     },
-                                    email: {
+                                    category: {
                                         type: "string",
                                     },
                                     avatar: {
                                         type: "string",
                                         format: "binary",
-                                    },
-                                    password: {
-                                        type: "string",
                                     },
                                 },
                             },
@@ -55,7 +52,7 @@ const userDocs = {
                 },
                 responses: {
                     201: {
-                        description: "New user created successfully",
+                        description: "New post created successfully",
                     },
                     400: {
                         description: "Bad Request",
@@ -66,47 +63,12 @@ const userDocs = {
                 },
             },
         },
-        "/api/users/auth": {
-            post: {
-                tags: ["Users"],
-                summary: "User Login",
-                description: "User login",
-                requestBody: {
-                    content: {
-                        "multipart/form-data": {
-                            schema: {
-                                type: "object",
-                                properties: {
-                                    email: {
-                                        type: "string",
-                                    },
-                                    password: {
-                                        type: "string",
-                                    },
-                                },
-                            },
-                        },
-                    },
-                    required: true,
-                },
-                responses: {
-                    200: {
-                        description: "User was logged in successfully",
-                    },
-                    400: {
-                        description: "Bad Request",
-                    },
-                    500: {
-                        description: "Internal Server Error",
-                    },
-                },
-            },
-        },
-        "/api/users/{id}": {
+
+        "/api/post/{id}": {
             get: {
-                tags: ["Users"],
-                summary: "Read User By ID",
-                description: "Get a user by ID",
+                tags: ["Posts"],
+                summary: "Read post By ID",
+                description: "Get a post by ID",
                 parameters: [
                     {
                         name: "id",
@@ -119,10 +81,10 @@ const userDocs = {
                 ],
                 responses: {
                     200: {
-                        description: "User retrieved successfully",
+                        description: "post retrieved successfully",
                     },
                     404: {
-                        description: "User not found",
+                        description: "post not found",
                     },
                     500: {
                         description: "Internal Server Error",
@@ -130,9 +92,9 @@ const userDocs = {
                 },
             },
             put: {
-                tags: ["Users"],
-                summary: "Update User",
-                description: "Update an existing user",
+                tags: ["Posts"],
+                summary: "Update post",
+                description: "Update an existing post",
                 parameters: [
                     {
                         name: "id",
@@ -149,21 +111,18 @@ const userDocs = {
                             schema: {
                                 type: "object",
                                 properties: {
-                                    firstName: {
+                                    title: {
                                         type: "string",
                                     },
-                                    lastName: {
+                                    description: {
                                         type: "string",
                                     },
-                                    email: {
+                                    category: {
                                         type: "string",
                                     },
                                     avatar: {
                                         type: "string",
                                         format: "binary",
-                                    },
-                                    password: {
-                                        type: "string",
                                     },
                                 },
                             },
@@ -173,13 +132,13 @@ const userDocs = {
                 },
                 responses: {
                     200: {
-                        description: "User updated successfully",
+                        description: "post updated successfully",
                     },
                     400: {
                         description: "Bad Request",
                     },
                     404: {
-                        description: "User not found",
+                        description: "post not found",
                     },
                     500: {
                         description: "Internal Server Error",
@@ -187,9 +146,9 @@ const userDocs = {
                 },
             },
             delete: {
-                tags: ["Users"],
-                summary: "Delete User",
-                description: "Delete a user by ID",
+                tags: ["Posts"],
+                summary: "Delete post",
+                description: "Delete a post by ID",
                 parameters: [
                     {
                         name: "id",
@@ -202,13 +161,13 @@ const userDocs = {
                 ],
                 responses: {
                     200: {
-                        description: "User deleted successfully",
+                        description: "post deleted successfully",
                     },
                     400: {
                         description: "Bad Request",
                     },
                     404: {
-                        description: "User not found",
+                        description: "post not found",
                     },
                     500: {
                         description: "Internal Server Error",
@@ -219,4 +178,4 @@ const userDocs = {
     },
 };
 
-export default userDocs;
+export default postDocs;
