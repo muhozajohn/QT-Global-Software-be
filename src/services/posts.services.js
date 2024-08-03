@@ -90,10 +90,6 @@ export const updatedPost = async (userId, postId, postsData, file, res) => {
         if (!post) {
             return { success: false, message: "Post not found" };
         }
-        const existing = await Posts.findOne({ where: { title: postsData.title } });
-        if (existing) {
-            return { success: false, message: "Title already exists" }
-        }
 
         // Upload the file to cloud if provided
         let result;
@@ -106,7 +102,7 @@ export const updatedPost = async (userId, postId, postsData, file, res) => {
             title: postsData.title,
             description: postsData.description,
             category: postsData.category,
-            avatar: result?.secure_url || "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png",
+            avatar: result?.secure_url,
             userId: user.id,
         }, { where: { id: postId } }
         );
@@ -127,7 +123,7 @@ export const deletePost = async (postId) => {
         if (!post) {
             return { success: false, message: "Post not found" };
         }
-        await User.destroy({ where: { id: postId } })
+        await Posts.destroy({ where: { id: postId } })
         return { success: true, message: "Post deleted successfully" };
 
     } catch (error) {
