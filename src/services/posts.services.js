@@ -1,4 +1,4 @@
-import { User, Posts } from "../dbase/models";
+import { User, Posts, Comments } from "../dbase/models";
 import { uploadToCloud } from "../helper/cloud";
 
 // Create a new post
@@ -40,27 +40,45 @@ export const createPosts = async (userId, postsData, file, res) => {
 
 // get all posts
 
+// get all posts
 export const getAllPosts = async () => {
     try {
         const posts = await Posts.findAll({
-            include: [{ model: User }],
+            include: [
+                {
+                    model: User,
+                    attributes: ['avatar', 'firstName', 'lastName']
+                },
+                {
+                    model: Comments,
+                    include: [
+                        {
+                            model: User,
+                            attributes: ['avatar', 'firstName', 'lastName']
+                        }
+                    ]
+                }
+            ],
             order: [["createdAt", "DESC"]],
         });
 
         return { success: true, message: "Posts retrieved successfully", posts };
 
     } catch (error) {
-        console.log("Service error: ", error)
-        return { success: false, message: "Failed To Retrieve Posts", error }
-
+        console.log("Service error: ", error);
+        return { success: false, message: "Failed To Retrieve Posts", error };
     }
 }
+
 
 // get post by id
 export const getPost = async (postId) => {
     try {
         const post = await Posts.findByPk(postId, {
-            include: [{ model: User }],
+            include: [{
+                model: User,
+                attributes: ['avatar', 'firstName', 'lastName']
+            }],
             order: [["createdAt", "DESC"]],
         });
 
