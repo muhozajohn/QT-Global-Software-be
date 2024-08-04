@@ -175,6 +175,34 @@ const postDocs = {
                 },
             },
         },
+        "/api/post/{category}/category": {
+            get: {
+                tags: ["Posts"],
+                summary: "Read post By category",
+                description: "Get a posts by category",
+                parameters: [
+                    {
+                        name: "category",
+                        in: "path",
+                        required: true,
+                        schema: {
+                            type: "string",
+                        },
+                    },
+                ],
+                responses: {
+                    200: {
+                        description: "posts retrieved successfully",
+                    },
+                    404: {
+                        description: "post not found",
+                    },
+                    500: {
+                        description: "Internal Server Error",
+                    },
+                },
+            },
+        },
     },
 };
 

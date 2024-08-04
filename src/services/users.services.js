@@ -28,7 +28,7 @@ export const createUser = async (userData, file, res) => {
             lastName: userData.lastName,
             email: userData.email,
             password: hashedPass,
-            avatar: result?.secure_url,
+            avatar: result?.secure_url || "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png",
         });
 
         return { success: true, message: "User created successfully", user: newUser };
@@ -134,7 +134,7 @@ export const updateUser = async (userId, userData, file) => {
                 lastName: userData.lastName,
                 email: userData.email,
                 password: hashedPass,
-                avatar: result?.secure_url || "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png",
+                avatar: result?.secure_url,
             },
             { where: { id: userId } }
         );
