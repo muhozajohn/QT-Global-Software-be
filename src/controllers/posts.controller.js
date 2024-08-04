@@ -94,6 +94,32 @@ export const getPost = async (req, res) => {
         });
     }
 };
+export const getPostByCategory = async (req, res) => {
+    try {
+        const { category } = req.params
+        const result = await PostsService.getPostByCategory(category);
+
+        if (result.success) {
+            return res.status(200).json({
+                status: "200",
+                message: result.message,
+                data: result.posts,
+            });
+        } else {
+            return res.status(500).json({
+                status: "500",
+                message: result.message,
+            });
+        }
+    } catch (error) {
+        console.log("Controller error", error)
+        return res.status(500).json({
+            status: "500",
+            message: "Internal server error",
+            error: error.message,
+        });
+    }
+};
 
 // update post
 export const updatePost = async (req, res) => {
