@@ -39,8 +39,6 @@ export const createPosts = async (userId, postsData, file, res) => {
 }
 
 // get all posts
-
-// get all posts
 export const getAllPosts = async () => {
     try {
         const posts = await Posts.findAll({
@@ -105,6 +103,45 @@ export const getPost = async (postId) => {
 
     }
 }
+
+
+
+// get post data by category
+export const getPostByCategory = async (category) => {
+    try {
+        const posts = await Posts.findAll({
+            where: { category: category },
+            include: [
+                {
+                    model: User,
+                    attributes: ['avatar', 'firstName', 'lastName']
+                },
+                {
+                    model: Comments,
+                    include: [
+                        {
+                            model: User,
+                            attributes: ['avatar', 'firstName', 'lastName']
+                        }
+                    ]
+                }
+            ]
+        });
+
+        if (posts.length === 0) {
+            return { success: false, message: "No posts found" };
+        }
+
+        return { success: true, message: "Posts retrieved successfully", posts };
+
+    } catch (error) {
+        console.log("Service error: ", error);
+        return { success: false, message: "Failed to retrieve posts", error };
+    }
+}
+
+
+
 
 
 // update post
