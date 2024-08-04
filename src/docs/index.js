@@ -2,6 +2,7 @@ import express from "express";
 import { serve, setup } from "swagger-ui-express";
 import userDocs from "./users.docs";
 import postDocs from "./posts.docs";
+import CommentsDocs from "./comments.docs";
 const docrouter = express.Router();
 
 const options = {
@@ -19,12 +20,14 @@ const options = {
     ],
     tags: [
         ...userDocs.tags,
-        ...postDocs.tags
+        ...postDocs.tags,
+        ...CommentsDocs.tags
 
     ],
     paths: {
         ...userDocs.paths,
-        ...postDocs.paths
+        ...postDocs.paths,
+        ...CommentsDocs.paths,
 
     },
     components: {
