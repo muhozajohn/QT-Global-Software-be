@@ -75,11 +75,21 @@ export const getAllPosts = async () => {
 export const getPost = async (postId) => {
     try {
         const post = await Posts.findByPk(postId, {
-            include: [{
-                model: User,
-                attributes: ['avatar', 'firstName', 'lastName']
-            }],
-            order: [["createdAt", "DESC"]],
+            include: [
+                {
+                    model: User,
+                    attributes: ['avatar', 'firstName', 'lastName']
+                },
+                {
+                    model: Comments,
+                    include: [
+                        {
+                            model: User,
+                            attributes: ['avatar', 'firstName', 'lastName']
+                        }
+                    ]
+                }
+            ]
         });
 
         if (!post) {
