@@ -30,3 +30,10 @@ const postSchema = Joi.object({
 export const validatePost = (postData) => {
     return postSchema.validate(postData);
 };
+const commentSchema = Joi.object({
+    text: Joi.string().required().min(3),
+});
+
+export const validateComment = (commentData) => {
+    return commentSchema.validate(commentData);
+};
